@@ -1,0 +1,15 @@
+.search {
+	@apply flex items-center transition-colors;
+
+	> svg {
+		@apply ml-1 text-3xl transition-colors;
+	}
+
+	> input {
+		@apply block w-full rounded-lg bg-white px-2 py-1 text-black outline-none placeholder:text-gray-500;
+	}
+
+	&:focus-within {
+		@apply border-gray-600;
+	}
+}

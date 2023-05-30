@@ -1,0 +1,35 @@
+.wrapper {
+	@apply inline-flex flex-col;
+	outline: 1px solid rgb(187, 247, 208);
+	transition: all 0.2s ease;
+	&:hover {
+		outline-width: 3px;
+		outline-color: rgb(74, 222, 128);
+	}
+	width: 200px;
+	.images {
+		img {
+			width: 200px;
+			height: 220px;
+		}
+		.swiper {
+			@apply mx-auto my-2 flex w-full items-center justify-center gap-1;
+			.swiperItem {
+				@apply h-4 w-4 rounded-full bg-green-500;
+			}
+		}
+	}
+	.title {
+		@apply pl-2 text-sm font-medium text-gray-600;
+	}
+	.price {
+		span {
+			@apply pl-2 text-lg font-semibold;
+		}
+	}
+	.count {
+		@apply pl-2 text-sm text-gray-300;
+	}
+	.emptyCount {
+	}
+}

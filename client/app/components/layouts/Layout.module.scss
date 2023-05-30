@@ -1,0 +1,79 @@
+.wrapper {
+	.header {
+		@apply fixed top-0 w-full bg-green-400;
+		> div {
+			@apply mx-auto flex items-center justify-between px-4 py-2 font-medium;
+			max-width: 1200px;
+			.hoverItem {
+				@apply rounded-lg border-2 border-green-400 px-2 py-1 transition-colors;
+			}
+			.hoverItem:hover {
+				@apply border-black;
+			}
+			> .catalog {
+				@apply flex items-center;
+				> svg {
+					@apply ml-1;
+				}
+			}
+			.phoneLink {
+				@apply flex items-center;
+				> svg {
+					@apply mr-1;
+				}
+			}
+		}
+	}
+	.content {
+		@apply mx-auto mt-24 min-h-screen;
+		max-width: 1200px;
+	}
+	.footer {
+		@apply bg-green-400 pt-10;
+		&Top {
+			@apply mx-auto flex justify-center gap-10;
+		}
+		&Contacts {
+			&Title {
+				h3 {
+					@apply mb-1 text-xl font-medium;
+				}
+				a {
+					@apply mb-3 block text-lg font-light;
+				}
+			}
+			.footerIcons {
+				@apply mt-10 flex cursor-pointer gap-4 text-4xl;
+			}
+		}
+		&Maps {
+			h2 {
+				@apply mb-4 text-center text-xl font-semibold;
+			}
+			div {
+				iframe {
+					@apply rounded-3xl;
+				}
+			}
+		}
+
+		&Links {
+			@apply flex flex-col gap-10;
+			&Inner {
+				@apply flex-row text-xl font-medium;
+				.footerLink {
+					@apply mb-4 block;
+				}
+			}
+		}
+		&Bottom {
+			@apply mx-auto mt-5 flex w-full flex-row justify-center gap-1 bg-black py-2.5 text-white;
+			a {
+				@apply flex items-center gap-2;
+				> svg {
+					@apply text-xl;
+				}
+			}
+		}
+	}
+}

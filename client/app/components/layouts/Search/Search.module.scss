@@ -1,0 +1,30 @@
+.list {
+	@apply absolute z-10 w-full animate-fade rounded-lg border border-gray-700 bg-gray-800;
+	top: calc(100% + 15px);
+	> a {
+		@apply relative flex items-center px-4 py-3;
+
+		&::after {
+			@apply absolute -right-0.5 h-0 w-0.5 bg-transparent;
+			content: '';
+			top: 28%;
+			transition: height 0.3s ease-in-out, background-color 0.3s ease-in-out;
+		}
+
+		&:hover::after {
+			@apply h-2/5 bg-green-200;
+		}
+
+		img {
+			@apply rounded-image;
+		}
+
+		> span {
+			@apply ml-3 truncate text-white;
+
+			&:last-child {
+				width: 70%;
+			}
+		}
+	}
+}
