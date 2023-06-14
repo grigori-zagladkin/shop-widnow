@@ -1,8 +1,12 @@
 .list {
-	@apply absolute z-10 w-full animate-fade rounded-lg border border-gray-700 bg-gray-800;
+	@apply absolute z-20 w-96 max-w-full animate-fade rounded-lg bg-white;
 	top: calc(100% + 15px);
 	> a {
-		@apply relative flex items-center px-4 py-3;
+		@apply relative flex items-center px-4 py-3 hover:bg-green-300;
+		transition: background-color 0.3s ease-in-out;
+		> div {
+			@apply ml-6;
+		}
 
 		&::after {
 			@apply absolute -right-0.5 h-0 w-0.5 bg-transparent;

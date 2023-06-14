@@ -104,7 +104,7 @@ export class ProductsService {
       sort,
       searchTerm,
       minPrice = 0,
-      maxPrice = 100000000,
+      maxPrice = 1000000,
       categoryId,
     } = dto
     const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
@@ -142,8 +142,8 @@ export class ProductsService {
             },
           ],
           price: {
-            gte: +minPrice,
             lte: +maxPrice,
+            gte: +minPrice,
           },
           categoryId: categoryId ? categoryId : {},
         }
@@ -191,8 +191,8 @@ export class ProductsService {
         title: dto.title,
         description: dto.description,
         categoryId: dto.categoryId,
-        count: dto.count,
-        price: dto.price,
+        count: +dto.count,
+        price: +dto.price,
         images: dto.images,
       },
     })

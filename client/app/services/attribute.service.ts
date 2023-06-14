@@ -27,6 +27,7 @@ export const AttributeService = {
 		})
 	},
 	async getAttributeByCategory(categoryId: number) {
-		return await axiosWithAuth.get<IAttribute[]>(getAttributeApiUrl(`/category/${categoryId}`))
+		let data = await axiosWithAuth.get<IAttribute[]>(getAttributeApiUrl(`/category/${categoryId}`))
+		return data
 	},
 }

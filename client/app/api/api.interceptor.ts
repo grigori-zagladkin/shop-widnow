@@ -6,8 +6,6 @@ import { AuthService } from '../services/auth/auth.service'
 
 import { errorCatch, getContentType } from './api.helper'
 
-console.log(API_URL)
-
 const axiosOptions = {
 	baseURL: API_URL,
 	headers: getContentType(),

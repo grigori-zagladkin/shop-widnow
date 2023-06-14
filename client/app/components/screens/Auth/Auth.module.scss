@@ -1,0 +1,6 @@
+.wrapper {
+	@apply flex items-center justify-center;
+	form {
+		@apply flex flex-col items-center;
+	}
+}

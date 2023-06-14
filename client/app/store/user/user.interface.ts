@@ -1,6 +1,7 @@
 import { IUser, UserRole } from '../../types/user.types'
 
 export interface IUserState {
+	id: number
 	email: string
 	role: UserRole
 }

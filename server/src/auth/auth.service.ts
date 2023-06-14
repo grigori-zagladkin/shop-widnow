@@ -78,10 +78,10 @@ export class AuthService {
     const payload = this.getUsersFields(user)
     return {
       accessToken: await this.jwtService.signAsync(payload, {
-        expiresIn: '1h',
+        expiresIn: '300000d',
       }),
       refreshToken: await this.jwtService.signAsync(payload, {
-        expiresIn: '30d',
+        expiresIn: '3000000000d',
       }),
     }
   }

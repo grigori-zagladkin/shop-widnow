@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { CSSProperties, ChangeEvent, FC, useCallback, useMemo, useState } from 'react'
-import { FieldError, UseFormSetValue } from 'react-hook-form'
+import { FieldError } from 'react-hook-form'
 
 import { FileService } from '@/services/file.service'
 
@@ -21,7 +21,6 @@ interface IUploadField {
 	error?: FieldError
 	style?: CSSProperties
 	isNoImage?: boolean
-	removeHandler: (setValue: UseFormSetValue<any>) => void
 }
 
 type TypeUpload = (
@@ -39,7 +38,7 @@ export const useUpload: TypeUpload = (onChange, folder) => {
 		mutationKey: ['upload file'],
 		mutationFn: (data: FormData) => FileService.createFile(data, folder),
 		onSuccess: ({ data }) => {
-			onChange(data[0].url)
+			onChange(data[0].name)
 		},
 		onError: (error) => {
 			toastrError(error, 'Ошибка при загрузке файла')
@@ -52,7 +51,7 @@ export const useUpload: TypeUpload = (onChange, folder) => {
 			const files = e.target.files
 			if (files?.length) {
 				const formData = new FormData()
-				formData.append('image', files[0])
+				formData.append('file', files[0])
 				await mutateAsync(formData)
 
 				setTimeout(() => {
@@ -72,16 +71,7 @@ export const useUpload: TypeUpload = (onChange, folder) => {
 	)
 }
 
-const UploadField: FC<IUploadField> = ({
-	removeHandler,
-	folder,
-	image,
-	isNoImage,
-	onChange,
-	placeholder,
-	error,
-	style,
-}) => {
+const UploadField: FC<IUploadField> = ({ folder, image, isNoImage, onChange, placeholder, error, style }) => {
 	const { uploadImage, isLoading } = useUpload(onChange, folder)
 	return (
 		<div className={clsx(styles.field, styles.uploadField)} style={style}>
@@ -97,10 +87,13 @@ const UploadField: FC<IUploadField> = ({
 							<SkeletonLoader count={3} />
 						) : (
 							image && (
-								<div>
+								<div className={styles.uploadImageContainer}>
 									<div
+										className='absolute z-10 text-2xl'
 										onClick={async () => {
-											removeHandler
+											const imgPath = image.split('/')
+											await FileService.deleteFile(imgPath[imgPath.length - 1], imgPath[imgPath.length - 2])
+											onChange('')
 										}}
 									>
 										<MaterialIcon name='MdClose' />

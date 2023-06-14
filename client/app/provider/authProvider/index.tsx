@@ -4,7 +4,7 @@ import { FC, PropsWithChildren, useEffect } from 'react'
 
 import { useActions } from '../../hooks/useActions'
 import { useAuth } from '../../hooks/useAuth'
-import { getRefreshToken } from '../../services/auth/auth.helper'
+import { getAccessToken, getRefreshToken } from '../../services/auth/auth.helper'
 
 import { TypeComponentAuthFields } from './auth-page.types'
 
@@ -19,17 +19,23 @@ const AuthProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = ({
 	const { pathname } = useRouter()
 	const Children = () => <>{children}</>
 	useEffect(() => {
+		const accessToken = getAccessToken()
+		if (accessToken) {
+			checkAuth()
+		}
+	}, []) //eslint-disable-line react-hooks/exhaustive-deps
+	useEffect(() => {
 		const refreshToken = getRefreshToken()
-		if (!refreshToken && user) {
+		if (!refreshToken && !user) {
 			logout()
 		}
 	}, [pathname])
 	return !isOnlyUser && !isOnlyUser ? (
+		<Children />
+	) : (
 		<DynamicCheckRole Component={{ isOnlyUser, isOnlyAdmin }}>
 			<Children />
 		</DynamicCheckRole>
-	) : (
-		<Children />
 	)
 }
 

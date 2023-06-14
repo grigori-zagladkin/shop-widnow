@@ -30,7 +30,7 @@ export class AuthController {
   ): Promise<Response<AuthResponse>> {
     const userData = await this.authService.registration(dto)
     response.cookie('refreshToken', userData.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000 * 100000,
       httpOnly: true,
     })
     return response.json(userData)
@@ -47,7 +47,7 @@ export class AuthController {
   ): Promise<Response<AuthResponse>> {
     const userData = await this.authService.login(dto)
     response.cookie('refreshToken', userData.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000 * 100000,
       httpOnly: true,
     })
     return response.json(userData)
@@ -65,7 +65,7 @@ export class AuthController {
     const refreshToken: string = request.cookies.refreshToken
     const userData = await this.authService.refresh(refreshToken)
     response.cookie('refreshToken', userData.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000 * 100000,
       httpOnly: true,
     })
     return response.json(userData)

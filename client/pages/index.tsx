@@ -13,7 +13,6 @@ export const getStaticProps: GetStaticProps = async () => {
 	try {
 		const { data: categories } = await CategoryService.getAllCategories()
 		const { data: lastItems } = await ProductService.getLastProducts()
-		console.log(categories, lastItems)
 		return {
 			props: {
 				categories,

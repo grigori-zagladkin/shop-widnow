@@ -5,7 +5,6 @@ import { toastr } from 'react-redux-toastr'
 import { IUpdateCategory } from 'types/category.types'
 
 import { CategoryService } from '@/services/category.service'
-import { FileService } from '@/services/file.service'
 
 import { toastrError } from '@/utils/toastrError'
 
@@ -39,21 +38,9 @@ export const useCategoryEdit = (setValue: UseFormSetValue<IUpdateCategory>) => {
 		},
 	})
 
-	const { mutateAsync: deleteImage } = useMutation({
-		mutationKey: ['delete image'],
-		mutationFn: (fileName: string) => FileService.deleteFile(fileName, 'categories'),
-		onSuccess: () => {
-			setValue('image', '')
-			toastr.success('Удаление изображения', 'Успешно')
-		},
-		onError: (error) => {
-			toastrError(error, 'Ошибка при удалении изображения')
-		},
-	})
-
 	const onSubmit: SubmitHandler<IUpdateCategory> = async (data) => {
 		await mutateAsync(data)
 	}
 
-	return { onSubmit, isLoading, deleteImage }
+	return { onSubmit, isLoading }
 }

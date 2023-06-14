@@ -39,7 +39,7 @@ export default class ProductDto {
     example: ['ewffwfrf.jpg', 'fergegerg.jpg'],
     description: 'array of image path',
   })
-  @IsArray({ each: true })
+  @IsArray()
   images: Array<string>
 
   @ApiProperty({

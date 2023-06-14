@@ -8,6 +8,8 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common'
 import {
   ApiBearerAuth,
@@ -55,7 +57,6 @@ export class ProductsController {
   @HttpCode(200)
   @Get()
   async getAllProducts(@Query() dto: SearchProductDto) {
-    console.log(dto)
     return await this.productsService.index(dto)
   }
 
@@ -84,6 +85,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'get product by id' })
   @ApiResponse({ status: 200, type: ProductsService })
   @HttpCode(200)
+  @UsePipes(new ValidationPipe())
   @Patch('/:id')
   async updateProduct(@Param('id') id: string, @Body() dto: ProductDto) {
     return await this.productsService.updateProduct(+id, dto)

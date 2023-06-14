@@ -1,4 +1,5 @@
 .wrapper {
+	@apply w-full;
 	.header {
 		@apply mt-8 flex items-center justify-between;
 		> button {
@@ -7,9 +8,9 @@
 	}
 
 	.item {
-		@apply mt-4 flex min-w-full items-center justify-between rounded-lg bg-gray-600 bg-opacity-20 px-5 transition-colors hover:bg-opacity-50;
+		@apply mt-4 flex min-w-full items-center justify-between rounded-lg bg-green-600 bg-opacity-60 px-5 text-black transition-colors hover:bg-opacity-80;
 		> div {
-			@apply py-3 text-white text-opacity-80;
+			@apply py-3 text-black text-opacity-80;
 			width: 24%;
 			&:last-child {
 				@apply justify-end text-right;
@@ -18,7 +19,7 @@
 	}
 
 	.itemHeader {
-		@apply mt-8 bg-white bg-opacity-20 shadow-lg hover:bg-opacity-20;
+		@apply mt-8 flex w-full justify-between rounded-lg bg-green-400 px-4 shadow-lg hover:bg-opacity-20;
 		> div {
 			@apply py-2.5 font-semibold text-opacity-90;
 		}

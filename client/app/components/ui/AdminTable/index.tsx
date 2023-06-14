@@ -30,10 +30,10 @@ const AdminTable: FC<IAdminTable> = ({
 	const { push } = useRouter()
 	return (
 		<div className={styles.wrapper}>
-			<AdminHeader searchTerm={searchTerm} handleSearch={handleSearch} />
+			<AdminHeader searchTerm={searchTerm} handleSearch={handleSearch} onClick={onClick} />
 			<AdminTableHeader headerItems={headerItems} />
 			{isLoading ? (
-				<SkeletonLoader count={10} />
+				<SkeletonLoader className='mt-4' count={10} />
 			) : tableItems.length ? (
 				tableItems.map((item, index) => (
 					<AdminTableItem key={index} removeHandler={() => removeHandler(item.id)} tableItem={item} />

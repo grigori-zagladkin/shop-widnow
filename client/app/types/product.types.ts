@@ -32,7 +32,7 @@ export interface IUpdateProduct {
 	count: number
 	images: string[]
 	attributes: ProductAttributes[]
-	category?: ICategory[]
+	category?: ICategory
 	categoryId?: number
 }
 

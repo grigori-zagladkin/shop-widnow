@@ -13,3 +13,22 @@
 		@apply border-gray-600;
 	}
 }
+
+.searchAdmin {
+	@apply flex items-center rounded-3xl border border-green-700 px-3 py-2 transition-colors;
+
+	> svg {
+		@apply mr-2 fill-green-600 text-3xl transition-colors;
+	}
+
+	> input {
+		@apply block w-full bg-transparent pl-3 text-black outline-none placeholder:text-green-600;
+	}
+
+	&:focus-within {
+		@apply border-green-600;
+		> svg {
+			@apply fill-green-500;
+		}
+	}
+}

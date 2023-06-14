@@ -13,7 +13,6 @@ import styles from '@/ui/form-elements/Form.module.scss'
 import Meta from '@/utils/meta/Meta'
 
 import { useAttributeEdit } from './useAttributeEdit'
-import { useCategoriesAdmin } from './useCategoriesAdmin'
 
 const DynamicSelect = dynamic(() => import('../../../ui/form-elements/Select'), {
 	ssr: false,
@@ -30,15 +29,19 @@ const AttributeEdit: FC = () => {
 	} = useForm<IUpdateAttribute>({
 		mode: 'onChange',
 	})
-	const { isLoading, onSumbit } = useAttributeEdit(setValue)
-	const { data: categoriesData, isLoading: isCategoriesLoading } = useCategoriesAdmin()
+	const {
+		isLoading,
+		onSubmit,
+		attributeData,
+		categoriesData: { data, isLoading: isCategoriesLoading },
+	} = useAttributeEdit(setValue)
 	return (
 		<Meta title='Редактирование аттрибута'>
 			<AdminLayout title='Редактирование аттрибута'>
 				{isLoading ? (
 					<SkeletonLoader count={5} />
 				) : (
-					<form onSubmit={handleSubmit(onSumbit)} className={styles.form}>
+					<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 						<div>
 							<Field
 								{...register('title', {
@@ -58,14 +61,15 @@ const AttributeEdit: FC = () => {
 										error={error}
 										field={field}
 										placeholder='Категории'
-										options={categoriesData || []}
+										options={data || []}
 										isMulti
 										isLoading={isCategoriesLoading}
+										changedValue={attributeData?.data?.categories || []}
 									/>
 								)}
 							/>
 						</div>
-						<Button>Обновить</Button>
+						<Button type='submit'>Обновить</Button>
 					</form>
 				)}
 			</AdminLayout>

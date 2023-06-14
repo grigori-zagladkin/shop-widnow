@@ -1,73 +1,78 @@
-import { FC } from 'react'
+import { Button, Form, Input } from 'antd'
+import { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { IUpdateCategory } from 'types/category.types'
 
 import AdminLayout from '@/components/layouts/AdminLayout'
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
-import Button from '@/components/ui/form-elements/Button'
-import Field from '@/components/ui/form-elements/Field'
-import TextField from '@/components/ui/form-elements/TextField'
-import UploadField from '@/components/ui/form-elements/Upload'
 
 import formStyles from '@/ui/form-elements/Form.module.scss'
 
 import Meta from '@/utils/meta/Meta'
 
+import ImageUpload from '@/components/ui/form-elements/ImageUpload'
 import { useCategoryEdit } from './useCategoryEdit'
 
 const CategoryEdit: FC = () => {
 	const {
 		setValue,
 		control,
-		getValues,
 		handleSubmit,
-		register,
-		formState: { errors },
 	} = useForm<IUpdateCategory>({
 		mode: 'onChange',
 	})
-	const { isLoading, onSubmit, deleteImage } = useCategoryEdit(setValue)
+	const { isLoading, onSubmit } = useCategoryEdit(setValue)
+	const [images, setImages] = useState<string[]>()
 	return (
 		<Meta title='Редктировать категорию'>
-			<AdminLayout title='Редктировать категорию'>
+			<AdminLayout>
 				{isLoading ? (
 					<SkeletonLoader count={10} />
 				) : (
-					<form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
-						<div className={formStyles.fields}>
-							<Field
-								{...register('title', {
-									required: 'Нужно название',
-								})}
-								placeholder='Название'
-								error={errors.title}
-							/>
-							<TextField
-								{...register('description', {
-									required: 'Нужно описание',
-								})}
-								placeholder='Описание'
-								error={errors.description}
-							/>
+					<Form onSubmitCapture={handleSubmit(onSubmit)} className={formStyles.form}>
+						<Form.Item>
 							<Controller
-								name='image'
 								control={control}
-								defaultValue=''
-								rules={{
-									required: 'Нужно изображение',
-								}}
-								render={({ field: { value, onChange }, fieldState: { error } }) => (
-									<UploadField
-										onChange={onChange}
-										folder='categories'
-										placeholder={'Изображение'}
-										removeHandler={() => deleteImage}
-									/>
-								)}
+								name='title'
+								render={({ field }) => <Input {...field} placeholder='Название катгеории' />}
 							/>
-						</div>
-						<Button>Обновить</Button>
-					</form>
+						</Form.Item>
+
+						<Form.Item>
+							<Controller
+								control={control}
+								name='description'
+								render={({ field }) => <Input.TextArea {...field} placeholder='Описание катгеории' />}
+							/>
+						</Form.Item>
+
+						<Form.Item>
+							<Controller control={control} name='image' render={({field}) => <ImageUpload {...field} countImages={1} images={} setImages= />} /> 
+						</Form.Item>
+
+						<Form.Item>
+							<Button htmlType='submit'>Обновить категорию</Button>
+						</Form.Item>
+
+						{/* <Controller
+							name='image'
+							control={control}
+							defaultValue=''
+							rules={{
+								required: 'Нужно изображение',
+							}}
+							render={({ field: { value, onChange }, fieldState: { error } }) => (
+								<UploadField
+									onChange={onChange}
+									folder='categories'
+									placeholder={'Изображение'}
+									isNoImage={false}
+									image={value}
+								/>
+							)}
+						/>
+						<Button type='submit'>Обновить</Button> */}
+					</Form>
 				)}
 			</AdminLayout>
 		</Meta>

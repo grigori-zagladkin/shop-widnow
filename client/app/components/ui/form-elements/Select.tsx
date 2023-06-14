@@ -16,11 +16,12 @@ export interface ISelect extends IFieldProps {
 	isMulti?: boolean
 	field: ControllerRenderProps<any, any>
 	isLoading?: boolean
+	changedValue?: number[]
 }
 
 const animatedComponents = makeAnimated()
 
-const Select: FC<ISelect> = ({ placeholder, error, isLoading, options, field, isMulti }) => {
+const Select: FC<ISelect> = ({ placeholder, error, isLoading, options, field, isMulti, changedValue }) => {
 	const onChange = (newValue: OnChangeValue<IOption, boolean>) => {
 		field.onChange(isMulti ? (newValue as IOption[]).map((item: IOption) => item.value) : (newValue as IOption).value)
 	}
@@ -39,6 +40,7 @@ const Select: FC<ISelect> = ({ placeholder, error, isLoading, options, field, is
 				<span>{placeholder}</span>
 				<ReactSelect
 					isLoading={isLoading}
+					defaultValue={[...options.filter((option) => changedValue?.indexOf(option.value) == -1)]}
 					onChange={onChange}
 					value={getValue()}
 					placeholder=''

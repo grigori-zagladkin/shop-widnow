@@ -64,7 +64,7 @@ export class AttributesService {
       )
   }
 
-  async createAttribute(dto: AttributeDto) {
+  async createAttribute() {
     const attribute = await this.prismaService.attribute.create({
       data: {
         title: '',
@@ -102,7 +102,7 @@ export class AttributesService {
       where: { attributeId: id },
     })
     const _categories = await Promise.all(
-      dto.categoryIds.map(
+      dto.categories.map(
         async (categoryId) =>
           await this.prismaService.attributeOnCategories.create({
             data: { categoryId, attributeId: id },

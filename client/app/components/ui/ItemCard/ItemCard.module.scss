@@ -1,35 +1,20 @@
 .wrapper {
-	@apply inline-flex flex-col;
-	outline: 1px solid rgb(187, 247, 208);
-	transition: all 0.2s ease;
-	&:hover {
-		outline-width: 3px;
-		outline-color: rgb(74, 222, 128);
+	@apply relative flex flex-col rounded-lg border border-gray-300 shadow-lg;
+	.circle {
+		@apply absolute right-1 top-1 h-2 w-2 rounded-full bg-red-200;
 	}
-	width: 200px;
-	.images {
-		img {
-			width: 200px;
-			height: 220px;
-		}
-		.swiper {
-			@apply mx-auto my-2 flex w-full items-center justify-center gap-1;
-			.swiperItem {
-				@apply h-4 w-4 rounded-full bg-green-500;
-			}
-		}
+	.image {
+		@apply block h-[250px] w-[220px] rounded-t-lg;
 	}
-	.title {
-		@apply pl-2 text-sm font-medium text-gray-600;
-	}
-	.price {
-		span {
-			@apply pl-2 text-lg font-semibold;
+	.info {
+		@apply overflow-hidden p-2;
+		white-space: nowrap;
+		.title {
+			@apply text-xl font-semibold;
 		}
 	}
 	.count {
-		@apply pl-2 text-sm text-gray-300;
-	}
-	.emptyCount {
+		@apply max-w-fit rounded-lg bg-red-200 px-2 py-1 text-sm text-red-400;
+		line-height: 1;
 	}
 }

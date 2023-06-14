@@ -6,9 +6,11 @@ import { axiosWithAuth, axiosWithoutAuth } from '@/api/api.interceptor'
 
 export const CategoryService = {
 	async getAllCategories(searchTerm?: string) {
-		return await axiosWithoutAuth.get<ICategory[]>(getCategoriesApiUrl(''), {
+		let data = await axiosWithoutAuth.get<ICategory[]>(getCategoriesApiUrl(''), {
 			params: searchTerm ? { searchTerm } : {},
 		})
+		console.log(data)
+		return data
 	},
 	async getCategoryBySlug(slug: string) {
 		return await axiosWithoutAuth.get<ICategory>(getCategoriesApiUrl(`/by-slug/${slug}`))

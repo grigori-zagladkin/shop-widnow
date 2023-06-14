@@ -6,13 +6,10 @@ import { CategoryService } from '@/services/category.service'
 
 import { toastrError } from '@/utils/toastrError'
 
-export const useCategoriesAdmin = () =>
+export const useCategoryData = () =>
 	useQuery({
-		queryKey: ['list of categories'],
+		queryKey: ['get all categories'],
 		queryFn: () => CategoryService.getAllCategories(),
-		onError: (error) => {
-			toastrError(error, 'Ошибка при получении данyых о категориях')
-		},
 		select: ({ data }) =>
 			data.map(
 				(category): IOption => ({
@@ -20,4 +17,7 @@ export const useCategoriesAdmin = () =>
 					value: category.id,
 				}),
 			),
+		onError: (error) => {
+			toastrError(error, 'Ошибка при загрузке категорий')
+		},
 	})

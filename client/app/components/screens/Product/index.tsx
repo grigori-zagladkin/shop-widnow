@@ -1,15 +1,18 @@
 import { FC } from 'react'
+import { IProduct } from 'types/product.types'
 
 import Meta from '@/utils/meta/Meta'
 
-import { IProductPage } from '../../../../pages/products/[slug]'
-
-import styles from './Product.module.scss'
-
-const Product: FC<IProductPage> = ({ product }) => {
+const Product: FC<{ product: IProduct }> = ({ product }) => {
 	return (
 		<Meta title={product.title}>
-			<section className={styles.wrapper}></section>
+			<div>
+				<div>
+					<div></div>
+					<div></div>
+				</div>
+				<div></div>
+			</div>
 		</Meta>
 	)
 }

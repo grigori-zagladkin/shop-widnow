@@ -1,22 +1,24 @@
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { ICategory } from 'types/category.types'
 
 import CategoriesList from '@/components/screens/CategoriesList'
 
 import { CategoryService } from '@/services/category.service'
 
-import Error404 from './404'
+const CategoriesPage: NextPage<{ categories: ICategory[] }> = ({
+	categories,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+	console.log(categories)
 
-const CategoriesPage: NextPage<{ categories: ICategory[] }> = ({ categories }) => {
-	return categories ? <CategoriesList categories={categories} /> : <Error404 />
+	return <CategoriesList categories={categories} />
 }
 
-const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<{ categories: ICategory[] }> = async () => {
 	try {
-		const { data: categories } = await CategoryService.getAllCategories('')
+		const { data: categories } = await CategoryService.getAllCategories()
 		return {
 			props: {
-				categories,
+				categories: categories,
 			},
 		}
 	} catch (error) {

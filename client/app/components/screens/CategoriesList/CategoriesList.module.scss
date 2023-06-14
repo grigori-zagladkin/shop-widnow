@@ -1,0 +1,25 @@
+.wrapper {
+	@apply mt-4 flex flex-wrap justify-center gap-6 lg:justify-start;
+	h2 {
+		@apply mb-4;
+	}
+	li {
+		a {
+			@apply flex min-h-full max-w-[250px] cursor-pointer flex-col p-2 hover:bg-gray-200;
+			border-radius: 16px;
+			transition: background-color 0.3s ease-in-out;
+			img {
+				width: 250px;
+				height: 250px;
+				display: block;
+				border-radius: 12px;
+			}
+			.title {
+				@apply mt-2 px-3 text-xl font-semibold;
+			}
+			.descr {
+				@apply mt-2 px-3;
+			}
+		}
+	}
+}

@@ -12,7 +12,7 @@ export const FileService = {
 		})
 	},
 	async deleteFile(fileName: string, folder?: string) {
-		return axiosWithAuth.delete(`/files/${fileName}`, {
+		return axiosWithAuth.delete<string>(`/files/${fileName}`, {
 			params: {
 				folder,
 			},

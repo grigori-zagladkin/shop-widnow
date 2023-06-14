@@ -34,7 +34,12 @@ const AdminActions: FC<{ editUrl: string; removeHandler: () => void }> = ({ edit
 			<button onClick={() => push(editUrl)}>
 				<MaterialIcon name='MdEdit' />
 			</button>
-			<button onClick={removeHandler}>
+			<button
+				onClick={() => {
+					let res = confirm('Вы точно хотите удалить?')
+					if (res) removeHandler()
+				}}
+			>
 				<MaterialIcon name='MdClose' />
 			</button>
 		</div>

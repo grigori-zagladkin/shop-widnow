@@ -1,0 +1,22 @@
+.wrapper {
+	@apply flex gap-4;
+	.sort {
+		@apply hidden lg:flex lg:min-w-[300px] lg:flex-col lg:gap-4;
+		&Type {
+			@apply text-xl font-semibold;
+		}
+	}
+
+	.items {
+		.itemsWrapper {
+			@apply flex flex-wrap justify-center gap-3 pt-5 lg:justify-start;
+		}
+		.pagination {
+			@apply fixed bottom-0 left-0 flex w-[100%] justify-center;
+		}
+	}
+}
+
+.sortMobile {
+	@apply flex flex-col gap-3;
+}

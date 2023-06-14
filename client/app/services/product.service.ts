@@ -15,7 +15,6 @@ export const ProductService = {
 		return await axiosWithoutAuth.get<IProduct[]>(getProductsApiUrl(`/similar/${slug}`))
 	},
 	async getAllProduct(search?: ISearchDto) {
-		console.log(axiosWithoutAuth.get)
 		return await axiosWithoutAuth.get<IProductPagination>(getProductsApiUrl(``), {
 			params: search
 				? {

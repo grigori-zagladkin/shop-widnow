@@ -6,7 +6,6 @@ import { IProduct } from 'types/product.types'
 import styles from './Search.module.scss'
 
 const SearchList: FC<{ products: IProduct[] }> = ({ products }) => {
-	console.log(products)
 	return (
 		<div className={styles.list}>
 			{products.length ? (

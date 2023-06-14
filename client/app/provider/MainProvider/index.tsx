@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import HeadProvider from 'provider/HeadProvider'
 import ReduxToast from 'provider/ReduxToast'
@@ -21,16 +22,18 @@ const queryClient = new QueryClient({
 const store = setupStore()
 
 const MainProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = ({ children, Component }) => (
-	<HeadProvider>
-		<QueryClientProvider client={queryClient}>
-			<Provider store={store}>
-				<AuthProvider Component={Component}>
-					<ReduxToast />
-					<Layout>{children}</Layout>
-				</AuthProvider>
-			</Provider>
-		</QueryClientProvider>
-	</HeadProvider>
+	<ChakraProvider>
+		<HeadProvider>
+			<QueryClientProvider client={queryClient}>
+				<Provider store={store}>
+					<AuthProvider Component={Component}>
+						<ReduxToast />
+						<Layout>{children}</Layout>
+					</AuthProvider>
+				</Provider>
+			</QueryClientProvider>
+		</HeadProvider>
+	</ChakraProvider>
 )
 
 export default MainProvider

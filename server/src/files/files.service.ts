@@ -20,7 +20,6 @@ export class FilesService {
       )
       return res
     } catch (error) {
-      console.log(error)
       throw new HttpException(
         'Ошибка при записи файла',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -34,7 +33,6 @@ export class FilesService {
       await remove(`${filePath}/${name}`)
       return 'success'
     } catch (error) {
-      console.log(error)
       throw new HttpException(
         'Ошибка при удалении файла',
         HttpStatus.INTERNAL_SERVER_ERROR,

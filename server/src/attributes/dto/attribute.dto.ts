@@ -8,5 +8,5 @@ export default class AttributeDto {
 
   @IsArray({ message: 'category ids should be an array of int' })
   @ApiProperty({ example: [1, 2, 3], description: 'category ids' })
-  categoryIds: number[]
+  categories: number[]
 }

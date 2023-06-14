@@ -1,0 +1,16 @@
+.wrapper {
+	@apply flex flex-col gap-[70px] pt-10;
+	h2 {
+		@apply mb-6 text-2xl font-semibold;
+	}
+	p {
+		@apply text-xl;
+	}
+	ul {
+		@apply pl-4;
+		list-style-type: circle;
+		li {
+			@apply mt-4;
+		}
+	}
+}

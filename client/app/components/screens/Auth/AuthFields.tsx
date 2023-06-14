@@ -19,7 +19,7 @@ const AuthFields: FC<IAuthFields> = ({ register, formState: { errors }, isPasswo
 		<Fragment>
 			<Field
 				{...register('email', {
-					required: 'email is required',
+					required: 'Введите почту',
 					pattern: {
 						value: validEmail,
 						message: 'Введите корректную почту',
@@ -33,7 +33,7 @@ const AuthFields: FC<IAuthFields> = ({ register, formState: { errors }, isPasswo
 					'password',
 					isPasswordRequired
 						? {
-								required: 'password is required',
+								required: 'Введите пароль',
 								minLength: {
 									value: 6,
 									message: 'Min length should more 6 symbols',

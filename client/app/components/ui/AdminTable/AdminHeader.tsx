@@ -13,7 +13,7 @@ export interface IAdminHeader {
 
 const AdminHeader: FC<IAdminHeader> = ({ onClick, searchTerm, handleSearch }) => (
 	<div className={styles.header}>
-		<SearchField searchTerm={searchTerm} handleSearch={handleSearch} />
+		<SearchField variant='admin' searchTerm={searchTerm} handleSearch={handleSearch} />
 		{onClick && <AdminCreateButton onClick={onClick} />}
 	</div>
 )

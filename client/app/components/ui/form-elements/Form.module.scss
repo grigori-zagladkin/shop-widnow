@@ -3,7 +3,7 @@
 }
 
 .common {
-	@apply relative border-b border-blue-600 transition-colors;
+	@apply transition-colors;
 
 	> label {
 		@apply block;
@@ -18,7 +18,15 @@
 	@apply mb-8 text-left;
 
 	input {
-		@apply w-full border-4 border-blue-600 bg-transparent px-2 py-1 text-lg font-medium text-black outline-none focus:ring-0;
+		@apply w-[500px]  px-2 py-1 text-lg font-medium text-black outline-none focus:ring-0;
+	}
+}
+
+.textField {
+	@apply mb-8 text-left;
+
+	textarea {
+		@apply w-[500px] border-2 border-green-600 px-2 py-1 text-lg font-light text-black outline-none focus:ring-0;
 	}
 }
 
@@ -35,7 +43,7 @@
 .form {
 	@apply mt-12;
 	.fields {
-		@apply flex flex-wrap items-center justify-between;
+		@apply flex flex-col flex-wrap;
 		> div {
 			width: 48%;
 		}
@@ -51,7 +59,7 @@
 		@apply flex;
 
 		> .uploadImageContainer {
-			@apply relative h-24 w-24 shrink-0;
+			@apply h-24 w-24 shrink-0;
 
 			img {
 				@apply pointer-events-none rounded-md object-cover object-center;

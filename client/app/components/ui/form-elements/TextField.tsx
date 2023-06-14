@@ -6,7 +6,7 @@ import { ITextField } from './form-elements.interface'
 
 const TextField = forwardRef<HTMLTextAreaElement, ITextField>(({ placeholder, error, style, ...rest }, ref) => {
 	return (
-		<div className={clsx(styles.field, styles.common)} style={style}>
+		<div className={clsx(styles.textField, styles.common)} style={style}>
 			<label>
 				<span>{placeholder}</span>
 				<textarea ref={ref} autoComplete='off' {...rest} />

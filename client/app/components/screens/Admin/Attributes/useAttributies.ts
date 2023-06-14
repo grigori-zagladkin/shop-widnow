@@ -48,8 +48,8 @@ export const useAttributes = () => {
 		onError: (error) => {
 			toastrError(error, 'Создать атрибут')
 		},
-		onSuccess: ({ data: id }) => {
-			push(getAdminUrl(`/attributes/${id}`))
+		onSuccess: ({ data }) => {
+			push(getAdminUrl(`/attributes/${data}`))
 			toastr.success('Создать атрибут', 'успешно')
 		},
 	})

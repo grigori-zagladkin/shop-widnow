@@ -34,8 +34,8 @@ export class AttributesController {
   @Auth('ADMIN')
   @UsePipes(new ValidationPipe())
   @Post()
-  async createAttribute(@Body() dto: AttributeDto) {
-    return await this.attributesService.createAttribute(dto)
+  async createAttribute() {
+    return await this.attributesService.createAttribute()
   }
 
   @ApiOperation({ summary: 'get attribute by category' })

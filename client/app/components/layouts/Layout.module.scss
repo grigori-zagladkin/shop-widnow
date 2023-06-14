@@ -77,3 +77,15 @@
 		}
 	}
 }
+
+.AdminLayout {
+	@apply flex w-full gap-5;
+	nav {
+		@apply h-screen border-r-2 border-slate-500 pr-[40px] pt-[100px];
+		ul {
+			li {
+				@apply mb-[20px] text-xl font-semibold;
+			}
+		}
+	}
+}
