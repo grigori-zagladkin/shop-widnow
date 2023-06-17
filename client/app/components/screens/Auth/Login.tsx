@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Typography } from 'antd'
 import { FC } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
@@ -25,7 +25,13 @@ const Login: FC = () => {
 	return (
 		<Meta title='Авторизация'>
 			<section className={styles.wrapper}>
-				<Form onSubmitCapture={handleSubmit(onSubmit)}>
+				<h3>Авторизация</h3>
+				<Form
+					style={{
+						alignItems: 'start',
+					}}
+					onSubmitCapture={handleSubmit(onSubmit)}
+				>
 					<Form.Item label='Логин'>
 						<Controller
 							name='email'
@@ -43,7 +49,7 @@ const Login: FC = () => {
 					</Form.Item>
 
 					<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-						<Button type='primary' htmlType='submit'>
+						<Button type='default' htmlType='submit'>
 							Войти
 						</Button>
 					</Form.Item>

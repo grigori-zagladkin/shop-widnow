@@ -9,7 +9,6 @@ export const CategoryService = {
 		let data = await axiosWithoutAuth.get<ICategory[]>(getCategoriesApiUrl(''), {
 			params: searchTerm ? { searchTerm } : {},
 		})
-		console.log(data)
 		return data
 	},
 	async getCategoryBySlug(slug: string) {

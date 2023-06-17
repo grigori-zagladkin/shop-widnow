@@ -1,22 +1,13 @@
-import dynamic from 'next/dynamic'
+import { Button, Form, Input, Select } from 'antd'
 import { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { IUpdateAttribute } from 'types/attribute.types'
 
-import AdminLayout from '@/components/layouts/AdminLayout'
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
-import Button from '@/components/ui/form-elements/Button'
-import Field from '@/components/ui/form-elements/Field'
-
-import styles from '@/ui/form-elements/Form.module.scss'
 
 import Meta from '@/utils/meta/Meta'
 
 import { useAttributeEdit } from './useAttributeEdit'
-
-const DynamicSelect = dynamic(() => import('../../../ui/form-elements/Select'), {
-	ssr: false,
-})
 
 const AttributeEdit: FC = () => {
 	const {
@@ -36,43 +27,54 @@ const AttributeEdit: FC = () => {
 		categoriesData: { data, isLoading: isCategoriesLoading },
 	} = useAttributeEdit(setValue)
 	return (
-		<Meta title='Редактирование аттрибута'>
-			<AdminLayout title='Редактирование аттрибута'>
-				{isLoading ? (
-					<SkeletonLoader count={5} />
-				) : (
-					<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-						<div>
-							<Field
-								{...register('title', {
-									required: 'Введите название',
-								})}
-								placeholder='Название атрибута'
-								error={errors.title}
-							/>
-							<Controller
-								name='categories'
-								control={control}
-								rules={{
-									required: 'Выберите категории/категорию',
-								}}
-								render={({ field, fieldState: { error } }) => (
-									<DynamicSelect
-										error={error}
-										field={field}
-										placeholder='Категории'
-										options={data || []}
-										isMulti
-										isLoading={isCategoriesLoading}
-										changedValue={attributeData?.data?.categories || []}
-									/>
-								)}
-							/>
-						</div>
-						<Button type='submit'>Обновить</Button>
-					</form>
-				)}
-			</AdminLayout>
+		<Meta title='Редактирование атрибута'>
+			{isLoading ? (
+				<SkeletonLoader count={5} />
+			) : (
+				<Form onSubmitCapture={handleSubmit(onSubmit)}>
+					<Form.Item label='Название'>
+						<Controller
+							name='title'
+							control={control}
+							render={({ field }) => (
+								<Input
+									{...field}
+									value={attributeData.data.title || getValues().title || ''}
+									placeholder='Название категории'
+								/>
+							)}
+						/>
+					</Form.Item>
+
+					<Form.Item label='Категории'>
+						<Controller
+							name='categories'
+							control={control}
+							render={({ field }) => (
+								<Select
+									{...field}
+									mode='multiple'
+									size='large'
+									defaultValue={attributeData.data.categories || []}
+									value={getValues().categories || []}
+									options={data}
+									onChange={(value: number | number[]) => {
+										if (Array.isArray(value)) {
+											setValue('categories', value)
+										} else {
+											setValue('categories', [value])
+										}
+									}}
+								/>
+							)}
+						/>
+					</Form.Item>
+
+					<Form.Item>
+						<Button htmlType='submit'>Обновить атрибут</Button>
+					</Form.Item>
+				</Form>
+			)}
 		</Meta>
 	)
 }

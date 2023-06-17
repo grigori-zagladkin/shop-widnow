@@ -1,35 +1,19 @@
-import dynamic from 'next/dynamic'
-import { FC, Fragment, useEffect } from 'react'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Select, Space } from 'antd'
+import { FC } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { IUpdateProduct } from 'types/product.types'
 
-import AdminLayout from '@/components/layouts/AdminLayout'
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
-import MyButton from '@/components/ui/form-elements/Button'
-import Field from '@/components/ui/form-elements/Field'
-import TextField from '@/components/ui/form-elements/TextField'
 
 import Meta from '@/utils/meta/Meta'
 
-import MultiUpload from './MultiUpload'
 import { useAttributeData } from './useAttributeData'
 import { useCategoryData } from './useCategoryData'
 import { useProductEdit } from './useProductEdit'
 
-const DynamicSelect = dynamic(() => import('../../../ui/form-elements/Select'), {
-	ssr: false,
-})
-
 const ProductEdit: FC = () => {
-	const {
-		control,
-		setValue,
-		getValues,
-		register,
-		handleSubmit,
-		formState: { errors },
-		watch,
-	} = useForm<IUpdateProduct>({
+	const { control, setValue, getValues, handleSubmit, watch } = useForm<IUpdateProduct>({
 		mode: 'onChange',
 	})
 	const {
@@ -38,134 +22,119 @@ const ProductEdit: FC = () => {
 	} = useProductEdit(setValue)
 	const { isLoading: isCategoriesLoading, data: categoriesData } = useCategoryData()
 	const { data: attributeData, isLoading: isAttributeLoading, refetch } = useAttributeData(setValue, watch)
-	const { fields, append, remove, update } = useFieldArray({ control, name: 'attributes' })
-	useEffect(() => {
-		setValue('categoryId', 2)
-		refetch()
-		attributeData?.forEach((item, idx) => {
-			append({
-				id: idx,
-				value: item.value,
-				attribute: item.attribute,
-			})
-		})
-	}, [])
-	const images = watch('images')
-	useEffect(() => {
-		fields.forEach((item) => {
-			remove(item.id)
-		})
-		attributeData?.forEach((item, idx) => {
-			append({
-				id: idx,
-				value: item.value,
-				attribute: item.attribute,
-			})
-		})
-	}, [watch().categoryId])
 	return (
 		<Meta title='Редактирование товара'>
-			<AdminLayout title='Редактирование товара'>
-				{isLoading ? (
-					<SkeletonLoader count={10} />
-				) : (
-					<form onSubmit={handleSubmit(onSubmit)}>
-						<div>
-							<Field
-								{...register('title', {
-									required: 'Введите название',
-								})}
-								placeholder='Название товара'
-								error={errors.title}
-							/>
-							<Controller
-								name='categoryId'
-								control={control}
-								rules={{
-									required: 'Выберите категории/категорию',
-								}}
-								render={({ field, fieldState: { error } }) => (
-									<DynamicSelect
-										error={error}
-										field={field}
-										placeholder='Категории'
-										options={categoriesData || []}
-										isLoading={isCategoriesLoading}
-									/>
-								)}
-							/>
-							<Field
-								{...register('price', {
-									required: 'Введите цену',
-								})}
-								placeholder='Цена товара'
-								error={errors.price}
-								type='number'
-							/>
-							<Field
-								{...register('count', {
-									required: 'Введите количество',
-								})}
-								placeholder='Количество товара'
-								error={errors.count}
-								type='number'
-							/>
-							<TextField
-								{...register('description', {
-									required: 'Описание',
-								})}
-								placeholder='Описание товара'
-								error={errors.description}
-							/>
-							{isAttributeLoading ? (
-								<SkeletonLoader count={4} />
-							) : (
-								fields?.map((item, index) => (
-									<Fragment key={index}>
-										<div className='flex gap-4 items-center'>
-											<Field
-												{...register(`attributes.${index}.attribute`, {
-													required: 'Введите название атрибута',
-												})}
-												placeholder='Название атрибута'
-											/>
-											<Field
-												{...register(`attributes.${index}.value`, {
-													required: 'Введите название атрибута',
-												})}
-												placeholder='Значение атрибута'
-											/>
-											<MyButton
-												onClick={() => {
-													remove(index)
-												}}
-											>
-												Убрать свойство
-											</MyButton>
-										</div>
-									</Fragment>
-								))
+			{isLoading ? (
+				<SkeletonLoader count={10} />
+			) : (
+				<Form
+					onFinish={handleSubmit(onSubmit)}
+					labelCol={{ flex: '100px' }}
+					labelAlign='left'
+					labelWrap
+					wrapperCol={{ flex: 1 }}
+					colon={false}
+				>
+					<Form.Item label='Название'>
+						<Controller
+							control={control}
+							name='title'
+							render={({ field }) => <Input {...field} value={getValues().title} placeholder='Название' />}
+						/>
+					</Form.Item>
+
+					<Form.Item label='Цена'>
+						<Controller
+							control={control}
+							name='price'
+							render={({ field }) => <Input {...field} type='number' value={getValues().price} placeholder='Цена' />}
+						/>
+					</Form.Item>
+
+					<Form.Item label='Количество'>
+						<Controller
+							control={control}
+							name='count'
+							render={({ field }) => (
+								<Input {...field} type='number' value={getValues().count} placeholder='Количество' />
 							)}
-							<MyButton
-								onClick={() => {
-									append({ value: '', attribute: '', id: 1 })
-								}}
-							>
-								Добавить атрибут
-							</MyButton>
-							<MultiUpload watch={watch} setValue={setValue} />
-							<MyButton
-								onClick={() => {
-									append({ value: '', attribute: '', id: 1 })
-								}}
-							>
-								Добавить картинку
-							</MyButton>
-						</div>
-						<MyButton type='submit'>Обновить</MyButton>
-					</form>
-				)}
-			</AdminLayout>
+						/>
+					</Form.Item>
+
+					<Form.Item label='Описание'>
+						<Controller
+							control={control}
+							name='description'
+							render={({ field }) => (
+								<Input.TextArea {...field} value={getValues().description} placeholder='Описание' />
+							)}
+						/>
+					</Form.Item>
+
+					<Form.Item label='Категория'>
+						<Controller
+							control={control}
+							name='category'
+							render={({ field }) => (
+								<Select
+									{...field}
+									size='large'
+									options={categoriesData || []}
+									value={getValues().categoryId}
+									onChange={(value: number) => {
+										setValue('categoryId', value)
+									}}
+								/>
+							)}
+						/>
+					</Form.Item>
+
+					<Form.List name='attributes'>
+						{(fields, { add, remove }) => (
+							<>
+								{fields.map(({ key, name, ...restField }) => (
+									<Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
+										<Form.Item {...restField} name='' label='Название атрибута'>
+											<Controller
+												control={control}
+												name={`attributes.${key}.attribute`}
+												render={({ field }) => <Input {...field} placeholder='Название атрибута' />}
+											/>
+										</Form.Item>
+										<Form.Item label='Значение атрибута'>
+											<Controller
+												name={`attributes.${key}.value`}
+												control={control}
+												render={({ field }) => <Input {...field} />}
+											/>
+										</Form.Item>
+										<MinusCircleOutlined className='block relative top-[-1px]' onClick={() => remove(name)} />
+									</Space>
+								))}
+								<Form.Item label='Фотография'>
+									{/* <Controller control={control} name='images' render={({field}) => <ProductImageUpload {...field} />} /> */}
+								</Form.Item>
+
+								<Form.Item>
+									<Button
+										type='dashed'
+										className='inline-flex items-center w-full justify-center'
+										onClick={() => add()}
+									>
+										<PlusOutlined /> Добавить свойство
+									</Button>
+								</Form.Item>
+							</>
+						)}
+					</Form.List>
+
+					<Form.Item>
+						<Button className='inline-flex items-center w-full justify-center' htmlType='submit'>
+							Обновить
+						</Button>
+					</Form.Item>
+				</Form>
+			)}
 		</Meta>
 	)
 }

@@ -2,6 +2,8 @@ import {
 	ExperimentOutlined,
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
+	PictureOutlined,
+	RollbackOutlined,
 	ShoppingOutlined,
 	SwitcherOutlined,
 } from '@ant-design/icons'
@@ -18,39 +20,6 @@ export interface ILink {
 	title: string
 }
 
-const AdminNavData: ILink[] = [
-	// {
-	// 	link: ,
-	// 	title: 'Атрибуты',
-	// },
-	{
-		link: getAdminUrl('/categories'),
-		title: 'Категории',
-	},
-	{
-		link: getAdminUrl(''),
-		title: 'Товары',
-	},
-]
-
-// const AdminLayout: FC<PropsWithChildren<{ title: string }>> = ({ children, title }) => (
-// 	<div className={styles.AdminLayout}>
-// 		<nav>
-// 			<ul>
-// 				{AdminNavData.map((link) => (
-// 					<li>
-// 						<Link href={link.link}>{link.title}</Link>
-// 					</li>
-// 				))}
-// 			</ul>
-// 		</nav>
-// 		<section className='w-full'>
-// 			<Heading>{title}</Heading>
-// 			{children}
-// 		</section>
-// 	</div>
-// )
-
 const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
 	const [collapsed, setCollapsed] = useState(false)
 	const {
@@ -58,41 +27,63 @@ const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
 	} = theme.useToken()
 	const { push } = useRouter()
 	return (
-		<Layout>
+		<Layout className='min-h-screen'>
 			<Sider trigger={null} collapsible collapsed={collapsed}>
 				<div className='demo-logo-vertical'></div>
-				<Menu theme='dark' mode='inline'>
-					<Menu.Item
-						icon={<ExperimentOutlined />}
-						onClick={() => {
-							push(getAdminUrl('/attributes'))
-							setCollapsed(false)
-						}}
-					>
-						Атрибуты
-					</Menu.Item>
-					<Menu.Item
-						icon={<SwitcherOutlined />}
-						onClick={() => {
-							push(getAdminUrl('/categories'))
-							setCollapsed(false)
-						}}
-					>
-						Категории
-					</Menu.Item>
-					<Menu.Item
-						icon={<ShoppingOutlined />}
-						onClick={() => {
-							push(getAdminUrl(''))
-							setCollapsed(false)
-						}}
-					>
-						Товары
-					</Menu.Item>
-				</Menu>
+				<Menu
+					items={[
+						{
+							icon: <ExperimentOutlined />,
+							key: 1,
+							label: 'Атрибуты',
+							onClick: () => {
+								push(getAdminUrl('attributes'))
+								setCollapsed(false)
+							},
+						},
+						{
+							icon: <SwitcherOutlined />,
+							key: 2,
+							label: 'Категории',
+							onClick: () => {
+								push(getAdminUrl('categories'))
+								setCollapsed(false)
+							},
+						},
+						{
+							icon: <ShoppingOutlined />,
+							key: 3,
+							label: 'Товары',
+							onClick: () => {
+								push(getAdminUrl(''))
+								setCollapsed(false)
+							},
+						},
+						{
+							icon: <PictureOutlined />,
+							key: 4,
+							label: 'Баннеры',
+							onClick: () => {
+								push(getAdminUrl('banners'))
+								setCollapsed(false)
+							},
+						},
+						{
+							icon: <RollbackOutlined />,
+							key: 5,
+							label: 'Главная',
+							onClick: () => {
+								push('/')
+								setCollapsed(false)
+							},
+						},
+					]}
+					theme='dark'
+					mode='inline'
+				/>
 			</Sider>
 			<Layout>
-				<Header style={{ padding: 0, background: colorBgContainer }}>
+				<Header style={{ padding: 0, background: colorBgContainer, display: 'flex', alignItems: 'center' }}>
 					<Button
 						type='text'
 						icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -103,14 +94,15 @@ const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
 							height: 64,
 						}}
 					/>
+					<h3 className='text-xl font-medium'>Панель администратора</h3>
 				</Header>
 				<Content
 					style={{
 						margin: '24px 16px',
 						padding: 24,
-						minHeight: 280,
 						background: colorBgContainer,
 					}}
+					className='min-h-fit'
 				>
 					{children}
 				</Content>

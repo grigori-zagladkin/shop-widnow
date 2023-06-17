@@ -8,8 +8,6 @@ import { CategoryService } from '@/services/category.service'
 const CategoriesPage: NextPage<{ categories: ICategory[] }> = ({
 	categories,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-	console.log(categories)
-
 	return <CategoriesList categories={categories} />
 }
 

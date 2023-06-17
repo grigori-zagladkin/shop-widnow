@@ -1,6 +1,6 @@
 .wrapper {
-	@apply flex items-center justify-center;
-	form {
-		@apply flex flex-col items-center;
+	@apply flex flex-col items-center justify-center gap-[20px] pt-[130px];
+	> h3 {
+		@apply text-2xl font-semibold;
 	}
 }

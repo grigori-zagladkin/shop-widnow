@@ -1,69 +1,75 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import Upload, { RcFile, UploadFile, UploadProps } from 'antd/es/upload'
 import Image from 'next/image'
-import { FC, useState } from 'react'
+import { ChangeEvent, FC, useRef, useState } from 'react'
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import { IUpdateCategory } from 'types/category.types'
+import { IUpdateProduct } from 'types/product.types'
 
-interface IUpload {
-	countImages: number
-	images: string[]
-	setImages: (image: string[]) => void
+interface IUpload<T> {
+	image: T
+	setImage: (img: T) => void
 }
 
-const ImageUpload: FC<IUpload> = ({ countImages, images, setImages }) => {
-	const getBase64 = (file: RcFile): Promise<string> =>
-		new Promise((resolve, reject) => {
-			const reader = new FileReader()
-			reader.readAsDataURL(file)
-			reader.onload = () => resolve(reader.result as string)
-			reader.onerror = (error) => reject(error)
-		})
+const getBase64 = (file: any): Promise<string> =>
+	new Promise((resolve, reject) => {
+		const reader = new FileReader()
+		reader.readAsDataURL(file)
+		reader.onload = () => resolve(reader.result as string)
+		reader.onerror = (error) => reject(error)
+	})
 
+const SoloImageUpload: FC<IUpload<string>> = ({ image, setImage }) => {
 	const [previewOpen, setPreviewOpen] = useState(false)
 	const [previewImage, setPreviewImage] = useState('')
 	const [previewTitle, setPreviewTitle] = useState('')
 
-	const [fileList, setFileList] = useState<UploadFile[]>([])
-
 	const handleCancel = () => setPreviewOpen(false)
 
-	const handlePreview = async (file: UploadFile) => {
-		if (!file.url || !file.preview) {
-			file.preview = await getBase64(file.originFileObj as RcFile)
-		}
-
-		setPreviewImage(file.url || (file.preview as string))
+	const handlePreview = async (file: string) => {
+		setPreviewImage(file)
 		setPreviewOpen(true)
-		setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1))
+		setPreviewTitle('Изображение')
 	}
 
-	const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-		setFileList(newFileList)
-		setImages([...images])
+	const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+		const files = e.target.files
+		if (countImages === 1) {
+			let image = await getBase64(files[0])
+			setImages(image)
+		} else {
+			// let newImage = getBase64(files[files?.length-1])
+			// setImages([...images])
+		}
 	}
 
-	const UploadButton = (
-		<div>
-			<PlusOutlined />
-			<div style={{ marginTop: 8 }}>Загрузить</div>
-		</div>
-	)
+	const ref = useRef<HTMLInputElement>(null)
+
 	return (
-		<>
-			<Upload
-				action={process.env.NEXT_APP_URL}
-				listType='picture-card'
-				fileList={fileList}
-				onPreview={handlePreview}
-				onChange={handleChange}
-			>
-				{fileList.length >= countImages ? null : UploadButton}
-			</Upload>
+		<div className='flex flex-col gap-[20px]'>
+			<Button type='default' onClick={() => ref.current.click()}>
+				Загрузить изображение
+			</Button>
+			<input className='hidden' type='file' onChange={handleChange} ref={ref} />
+			{Array.isArray(images) &&
+				images.map((img, idx) => (
+					<div>
+						<Image alt={`Изображение +${img}`} src={img} key={idx} />
+					</div>
+				))}
+			{
+				<div>
+					<Image width={200} height={200} alt={`Изображение +${images}`} src={images} />
+				</div>
+			}
 			<Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
 				<Image src={previewImage} alt={'Картинка'} style={{ width: '100%' }} />
 			</Modal>
-		</>
+		</div>
 	)
 }
+
+const MultiImageUpload: FC<IUpload<string[]>> = { image, setImage }
 
 export default ImageUpload

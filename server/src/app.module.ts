@@ -11,6 +11,7 @@ import { PaginationModule } from './pagination/pagination.module'
 import { PrismaService } from './prisma/prisma.service'
 import { ProductsModule } from './products/products.module'
 import { UsersModule } from './users/users.module'
+import { BannerModule } from './banner/banner.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module'
     UsersModule,
     AttributesModule,
     PaginationModule,
+    BannerModule,
   ],
   controllers: [],
   providers: [PrismaService],

@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { SelectProps } from 'antd'
 import { useRouter } from 'next/router'
 import { SubmitHandler, UseFormSetValue } from 'react-hook-form'
 import { toastr } from 'react-redux-toastr'
@@ -18,7 +19,11 @@ export const useAttributeEdit = (setValue: UseFormSetValue<IUpdateAttribute>) =>
 
 	const attributeId = Number(query.id)
 
-	const { isLoading, data: attributeData } = useQuery({
+	const {
+		isLoading,
+		data: attributeData,
+		refetch,
+	} = useQuery({
 		queryKey: ['get attribute by id', attributeId],
 		queryFn: () => AttributeService.getAttributeById(attributeId),
 		onSuccess: ({ data }) => {
@@ -37,12 +42,10 @@ export const useAttributeEdit = (setValue: UseFormSetValue<IUpdateAttribute>) =>
 			toastrError(error, 'Ошибка при получении данyых о категориях')
 		},
 		select: ({ data }) =>
-			data.map(
-				(category): IOption => ({
-					label: category.title,
-					value: category.id,
-				}),
-			),
+			data.map((category) => ({
+				label: category.title,
+				value: category.id,
+			})),
 		onSuccess: (data) => {
 			setValue('categories', attributeData?.data?.categories || [])
 		},
@@ -58,6 +61,7 @@ export const useAttributeEdit = (setValue: UseFormSetValue<IUpdateAttribute>) =>
 		onSuccess: () => {
 			toastr.success('Обновление атрибута', 'Успешно')
 			push(getAdminUrl('attributes'))
+			refetch()
 		},
 	})
 

@@ -1,3 +1,5 @@
+export const APP_URL = process.env.NEXT_APP_URL
+
 export const getAdminUrl = (url: string) => `/manage/${url}`
 export const getAdminHomeUrl = () => getAdminUrl('').slice(0, -1)
 export const getCategoriesUrl = () => `/categories`

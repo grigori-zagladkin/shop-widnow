@@ -8,12 +8,14 @@ import { CategoryService } from '@/services/category.service'
 
 import { toastrError } from '@/utils/toastrError'
 
+import { getAdminUrl } from '@/config/url.config'
+
 export const useCategoryEdit = (setValue: UseFormSetValue<IUpdateCategory>) => {
 	const { query, push } = useRouter()
 
 	const categoryId = Number(query.id)
 
-	const { isLoading } = useQuery({
+	const { isLoading, data, refetch } = useQuery({
 		queryKey: ['get category by id', categoryId],
 		queryFn: () => CategoryService.getCategoryById(categoryId),
 		onSuccess: ({ data }) => {
@@ -35,6 +37,8 @@ export const useCategoryEdit = (setValue: UseFormSetValue<IUpdateCategory>) => {
 		},
 		onSuccess: () => {
 			toastr.success('Обновление категории', 'Успешно')
+			push(getAdminUrl('categories'))
+			refetch()
 		},
 	})
 
@@ -42,5 +46,5 @@ export const useCategoryEdit = (setValue: UseFormSetValue<IUpdateCategory>) => {
 		await mutateAsync(data)
 	}
 
-	return { onSubmit, isLoading }
+	return { onSubmit, isLoading, data }
 }

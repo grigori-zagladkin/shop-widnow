@@ -96,3 +96,17 @@ model AttributeOnCategories {
 
   @@id([attributeId, categoryId])
 }
+
+model Banner {
+  id    Int    @id @default(autoincrement())
+  
+  title String
+  description String
+  image String
+  order Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("banners")
+}

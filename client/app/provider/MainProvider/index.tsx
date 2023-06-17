@@ -9,6 +9,8 @@ import { Provider } from 'react-redux'
 
 import Layout from '@/components/layouts'
 
+import ErrorBoundary from '@/utils/error-boundary'
+
 import { setupStore } from '@/store/index'
 
 const queryClient = new QueryClient({
@@ -22,18 +24,20 @@ const queryClient = new QueryClient({
 const store = setupStore()
 
 const MainProvider: FC<PropsWithChildren<TypeComponentAuthFields>> = ({ children, Component }) => (
-	<ChakraProvider>
-		<HeadProvider>
-			<QueryClientProvider client={queryClient}>
-				<Provider store={store}>
-					<AuthProvider Component={Component}>
-						<ReduxToast />
-						<Layout>{children}</Layout>
-					</AuthProvider>
-				</Provider>
-			</QueryClientProvider>
-		</HeadProvider>
-	</ChakraProvider>
+	<ErrorBoundary>
+		<ChakraProvider>
+			<HeadProvider>
+				<QueryClientProvider client={queryClient}>
+					<Provider store={store}>
+						<AuthProvider Component={Component}>
+							<ReduxToast />
+							<Layout>{children}</Layout>
+						</AuthProvider>
+					</Provider>
+				</QueryClientProvider>
+			</HeadProvider>
+		</ChakraProvider>
+	</ErrorBoundary>
 )
 
 export default MainProvider

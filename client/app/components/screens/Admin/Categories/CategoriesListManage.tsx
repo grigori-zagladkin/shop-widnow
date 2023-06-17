@@ -1,6 +1,7 @@
+import { PlusCircleFilled, PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { Button, Input, Skeleton, Table } from 'antd'
 import { FC } from 'react'
 
-import AdminLayout from '@/components/layouts/AdminLayout'
 import AdminTable from '@/components/ui/AdminTable'
 
 import Meta from '@/utils/meta/Meta'
@@ -8,20 +9,27 @@ import Meta from '@/utils/meta/Meta'
 import { useAdminCategories } from './useCategories'
 
 const CategoriesListManage: FC = () => {
-	const { handleSearch, createAsync, deleteAsync, isLoading, data, searchTerm } = useAdminCategories()
+	const { handleSearch, createAsync, columns, isLoading, data, searchTerm } = useAdminCategories()
 	return (
 		<Meta title='Список категорий'>
-			<AdminLayout title='Список категорий'>
-				<AdminTable
-					tableItems={data || []}
-					isLoading={isLoading}
-					headerItems={['Название', 'Описание']}
-					removeHandler={deleteAsync}
-					searchTerm={searchTerm}
-					handleSearch={handleSearch}
-					onClick={createAsync}
+			<div className='flex w-full gap-[30px] justify-between items-center mb-[30px]'>
+				<Input
+					prefix={<SearchOutlined />}
+					className='max-w-[300px]'
+					type='search'
+					value={searchTerm}
+					onChange={handleSearch}
 				/>
-			</AdminLayout>
+				<Button
+					className='flex items-center max-w-[200px]'
+					onClick={() => {
+						createAsync()
+					}}
+				>
+					<PlusOutlined /> Создать категорию
+				</Button>
+			</div>
+			{isLoading ? <Skeleton /> : <Table scroll={{ x: 700 }} columns={columns} dataSource={data} />}
 		</Meta>
 	)
 }

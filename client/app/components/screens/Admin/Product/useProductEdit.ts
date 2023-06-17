@@ -30,8 +30,9 @@ export const useProductEdit = (setValue: UseFormSetValue<IUpdateProduct>) => {
 		onError: (error) => {
 			toastrError(error, 'Ошибка при обновлении товара')
 		},
-		onSuccess: ({ data }) => {
-			push(`/products/${data.slug}`)
+		onSuccess: () => {
+			push(`/manage`)
+			productData.refetch()
 			toastr.success('Создание товара', 'Успешно')
 		},
 	})
