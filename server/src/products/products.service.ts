@@ -145,7 +145,7 @@ export class ProductsService {
             lte: +maxPrice,
             gte: +minPrice,
           },
-          categoryId: categoryId ? categoryId : {},
+          categoryId: categoryId ? +categoryId : {},
         }
       : {}
     const { perPage, skip } = this.paginationService.getPagination(dto)
@@ -184,13 +184,22 @@ export class ProductsService {
           }),
       ),
     )
+    const category = await this.prismaService.category.findUnique({
+      where: {
+        id: +dto.categoryId,
+      },
+    })
     const product = await this.prismaService.product.update({
       where: { id },
       data: {
         slug: generateSlug(dto.title),
         title: dto.title,
         description: dto.description,
-        categoryId: dto.categoryId,
+        category: {
+          connect: {
+            id: +dto.categoryId,
+          },
+        },
         count: +dto.count,
         price: +dto.price,
         images: dto.images,

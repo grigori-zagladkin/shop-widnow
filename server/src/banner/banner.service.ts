@@ -38,6 +38,7 @@ export class BannerService {
       },
       data: {
         ...dto,
+        order: +dto.order,
       },
     })
   }

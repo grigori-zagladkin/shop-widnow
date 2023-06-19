@@ -21,7 +21,7 @@ const BannerListManage: FC = () => {
 			{isLoading ? (
 				<Skeleton />
 			) : (
-				<Table dataSource={data?.sort((a, b) => a.order - b.order) || []} columns={columns} />
+				<Table scroll={{ x: 1000 }} dataSource={data?.sort((a, b) => a.order - b.order) || []} columns={columns} />
 			)}
 		</Meta>
 	)

@@ -89,3 +89,8 @@
 		}
 	}
 }
+
+.content {
+	@apply mx-auto mt-6 grid min-h-screen items-start justify-start;
+	max-width: 1200px;
+}

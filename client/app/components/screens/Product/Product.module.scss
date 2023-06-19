@@ -1,0 +1,64 @@
+.wrapper {
+	@apply mx-auto inline-grid min-w-full;
+	grid-template-columns: repeat(2, 1fr);
+	grid-auto-rows: 1fr;
+	grid-gap: 2.5rem;
+}
+
+.imgWrapper {
+	@apply relative h-[500px] max-h-[500px] w-[500px] max-w-[500px] overflow-hidden rounded-[15px];
+	.image {
+		@apply h-full w-full object-cover object-center;
+	}
+}
+
+.mainImage {
+	@apply mb-6;
+}
+
+.images {
+	@apply flex items-center justify-evenly;
+}
+
+.littleImage {
+	@apply relative h-[70px] w-[70px] overflow-hidden rounded-lg;
+	img {
+		@apply h-full w-full object-cover object-center;
+	}
+}
+
+.title {
+	@apply mb-2 text-3xl font-bold;
+}
+
+.price {
+	@apply mb-2 text-2xl;
+}
+
+.empty {
+	@apply rounded-xl bg-slate-300 px-3 py-2 text-xl;
+}
+
+.count {
+	@apply my-2 max-w-fit rounded-xl bg-red-200 px-1 py-0.5 text-lg text-red-400;
+}
+
+.description {
+	@apply mb-4 text-xl;
+}
+
+.border {
+	@apply my-4;
+}
+
+.header {
+	@apply mb-5 text-2xl text-yellow-500;
+}
+
+.attribute {
+	@apply text-lg font-semibold;
+}
+
+.value {
+	@apply text-lg;
+}

@@ -1,16 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
-import { UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import { UseFormSetValue } from 'react-hook-form'
 import { IUpdateProduct } from 'types/product.types'
 
 import { AttributeService } from '@/services/attribute.service'
 
 import { toastrError } from '@/utils/toastrError'
 
-export const useAttributeData = (setValue: UseFormSetValue<IUpdateProduct>, watch: UseFormWatch<IUpdateProduct>) => {
-	const categoryId = watch('categoryId')
+export const useAttributeData = (setValue: UseFormSetValue<IUpdateProduct>) => {
 	return useQuery({
-		queryKey: ['get list of attributes', categoryId],
-		queryFn: () => AttributeService.getAttributeByCategory(categoryId || 2),
+		queryKey: ['get list of attributes'],
+		queryFn: () => AttributeService.getAllAttributes(),
 		onError: (error) => {
 			toastrError(error, 'Ошибка при загрузке атрибутов')
 		},
@@ -21,8 +20,8 @@ export const useAttributeData = (setValue: UseFormSetValue<IUpdateProduct>, watc
 			})),
 		onSuccess: (data) => {
 			data.map((item, idx) => {
-				setValue(`attributes.${idx}.attribute`, data[idx].attribute)
-				setValue(`attributes.${idx}.value`, data[idx].value)
+				setValue(`attributes.${idx}.attribute`, item.attribute)
+				setValue(`attributes.${idx}.value`, item.value)
 			})
 		},
 	})

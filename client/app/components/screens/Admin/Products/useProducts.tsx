@@ -155,7 +155,7 @@ export const useProducts = () => {
 					count: product.count,
 					description: product.description,
 					date: product.createdAt,
-					category: product.category.title,
+					category: product?.category?.title,
 					key: String(product.id),
 					title: product.title,
 				}),

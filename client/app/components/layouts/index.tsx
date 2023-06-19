@@ -6,6 +6,7 @@ import { FC, PropsWithChildren } from 'react'
 import NavLink from '../NavLink'
 
 import AdminLayout, { ILink } from './AdminLayout'
+import styles from './Layout.module.scss'
 import Search from './Search'
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
@@ -41,7 +42,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 		<>
 			{!asPath.includes('manage') && (
 				<Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-					<Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+					<Flex h={16} alignItems={'center'} className='mx-auto' maxWidth={1200} justifyContent={'space-between'}>
 						<IconButton
 							size={'md'}
 							icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -57,9 +58,9 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 								))}
 							</HStack>
 						</HStack>
-						<Flex alignItems={'center'}>
+						{/* <Flex alignItems={'center'}>
 							<Search />
-						</Flex>
+						</Flex> */}
 					</Flex>
 
 					{isOpen ? (
@@ -74,7 +75,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 				</Box>
 			)}
 
-			<div className='min-h-full p-4 flex flex-col'>{children}</div>
+			<div className={styles.content}>{children}</div>
 
 			{!asPath.includes('manage') && <footer>Подвал</footer>}
 		</>

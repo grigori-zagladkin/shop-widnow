@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
 import { PrismaService } from './prisma/prisma.service'
+import { urlencoded, json } from 'express'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: false })
@@ -17,6 +18,8 @@ async function bootstrap() {
   })
   app.use(cookieParser())
   app.setGlobalPrefix('api')
+  app.use(json({ limit: '50mb' }))
+  app.use(urlencoded({ extended: true, limit: '50mb' }))
 
   const PORT = configService.get('PORT') || 1999
 

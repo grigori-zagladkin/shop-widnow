@@ -1,3 +1,5 @@
+import { RcFile } from 'antd/es/upload'
+
 export const dataURItoBlob = (dataURI: string) => {
 	const byteString = atob(dataURI.split(',')[1])
 	const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
@@ -8,3 +10,11 @@ export const dataURItoBlob = (dataURI: string) => {
 	}
 	return new Blob([ab], { type: mimeString })
 }
+
+export const getBase64 = (file: RcFile): Promise<string> =>
+	new Promise((resolve, reject) => {
+		const reader = new FileReader()
+		reader.readAsDataURL(file)
+		reader.onload = () => resolve(reader.result as string)
+		reader.onerror = (error) => reject(error)
+	})

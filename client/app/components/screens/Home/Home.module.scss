@@ -1,3 +1,16 @@
 .topBlock {
 	@apply flex flex-col;
 }
+
+.carousel {
+	@apply h-[300px] w-[500px];
+	& .itemWrapper {
+		@apply relative h-[300px] w-[500px];
+		& .title {
+			@apply absolute left-3 top-3 text-2xl font-semibold text-white;
+		}
+		& .descr {
+			@apply absolute bottom-3 left-3 max-w-[50%] text-xl text-white;
+		}
+	}
+}

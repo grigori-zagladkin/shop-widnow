@@ -1,7 +1,9 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Form, Input, Select, Space } from 'antd'
-import { FC } from 'react'
+import { Button, Form, Input, Select, Space, UploadFile } from 'antd'
+import dynamic from 'next/dynamic'
+import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import Skeleton from 'react-loading-skeleton'
 import { IUpdateProduct } from 'types/product.types'
 
 import SkeletonLoader from '@/components/ui/SkeletonLoader'
@@ -12,16 +14,39 @@ import { useAttributeData } from './useAttributeData'
 import { useCategoryData } from './useCategoryData'
 import { useProductEdit } from './useProductEdit'
 
+const DynamicUpload = dynamic(() => import('./ProductImageUpload'), { ssr: false })
+
 const ProductEdit: FC = () => {
 	const { control, setValue, getValues, handleSubmit, watch } = useForm<IUpdateProduct>({
 		mode: 'onChange',
 	})
 	const {
+		optionData,
+		categoriesData: { isLoading: isLoadingCategories, data: fullCategoriesData },
+	} = useCategoryData()
+	const { data: attributeData, isLoading: isAttributeLoading, refetch } = useAttributeData(setValue)
+	const {
 		productData: { isLoading, data },
 		onSubmit,
 	} = useProductEdit(setValue)
-	const { isLoading: isCategoriesLoading, data: categoriesData } = useCategoryData()
-	const { data: attributeData, isLoading: isAttributeLoading, refetch } = useAttributeData(setValue, watch)
+	if (isLoading || isAttributeLoading || isLoadingCategories) return <Skeleton />
+	let images = data?.data?.images || getValues().images || []
+	const [fileList, setFileList] = useState<UploadFile[]>(
+		images.length
+			? images?.map((item, idx) => ({
+					name: '',
+					uid: `-${idx}`,
+					thumbUrl: item,
+			  }))
+			: [],
+	)
+	// useEffect(() => {
+	// 	console.log(fileList)
+	// 	setValue(
+	// 		'images',
+	// 		fileList.map((item) => item.thumbUrl),
+	// 	)
+	// }, [fileList])
 	return (
 		<Meta title='Редактирование товара'>
 			{isLoading ? (
@@ -39,7 +64,9 @@ const ProductEdit: FC = () => {
 						<Controller
 							control={control}
 							name='title'
-							render={({ field }) => <Input {...field} value={getValues().title} placeholder='Название' />}
+							render={({ field }) => (
+								<Input {...field} value={data.data.title || getValues().title || ''} placeholder='Название' />
+							)}
 						/>
 					</Form.Item>
 
@@ -79,10 +106,15 @@ const ProductEdit: FC = () => {
 								<Select
 									{...field}
 									size='large'
-									options={categoriesData || []}
-									value={getValues().categoryId}
+									defaultValue={data.data.categoryId}
+									options={optionData || []}
+									value={getValues().categoryId || null}
 									onChange={(value: number) => {
 										setValue('categoryId', value)
+										setValue(
+											'category',
+											fullCategoriesData.data.find((item) => item.id === value),
+										)
 									}}
 								/>
 							)}
@@ -111,9 +143,6 @@ const ProductEdit: FC = () => {
 										<MinusCircleOutlined className='block relative top-[-1px]' onClick={() => remove(name)} />
 									</Space>
 								))}
-								<Form.Item label='Фотография'>
-									{/* <Controller control={control} name='images' render={({field}) => <ProductImageUpload {...field} />} /> */}
-								</Form.Item>
 
 								<Form.Item>
 									<Button
@@ -127,6 +156,10 @@ const ProductEdit: FC = () => {
 							</>
 						)}
 					</Form.List>
+
+					<Form.Item label='Картинки'>
+						<DynamicUpload setValue={setValue} fileList={fileList} setFileList={setFileList} images={images} />
+					</Form.Item>
 
 					<Form.Item>
 						<Button className='inline-flex items-center w-full justify-center' htmlType='submit'>

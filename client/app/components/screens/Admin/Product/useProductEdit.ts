@@ -19,6 +19,10 @@ export const useProductEdit = (setValue: UseFormSetValue<IUpdateProduct>) => {
 			setValue('price', data['price'])
 			setValue('count', data['count'])
 			setValue('category', data['category'])
+			setValue('categoryId', data['categoryId'])
+			setValue('images', data['images'])
+			setValue('description', data['description'])
+			setValue('attributes', data['attributes'])
 		},
 		onError: (error) => {
 			toastrError(error, 'Ошибка при загрузке товара')
@@ -31,7 +35,7 @@ export const useProductEdit = (setValue: UseFormSetValue<IUpdateProduct>) => {
 			toastrError(error, 'Ошибка при обновлении товара')
 		},
 		onSuccess: () => {
-			push(`/manage`)
+			// push(`/manage`)
 			productData.refetch()
 			toastr.success('Создание товара', 'Успешно')
 		},

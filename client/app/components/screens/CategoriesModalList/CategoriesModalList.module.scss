@@ -1,0 +1,25 @@
+.wrapper {
+	@apply grid w-fit gap-[20px];
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	&Modal {
+		@apply block w-[1000px];
+	}
+	li {
+		a {
+			@apply block h-full rounded-[16px] p-[12px] hover:bg-gray-200;
+			& .imgWrapper {
+				@apply relative mb-4 h-[250px] w-[250px] overflow-hidden rounded-[12px];
+				img {
+					@apply h-full w-full object-cover object-center;
+				}
+			}
+			& .title {
+				@apply mb-2 text-2xl font-semibold;
+			}
+			& .descr {
+				@apply text-xl font-light;
+			}
+		}
+	}
+}

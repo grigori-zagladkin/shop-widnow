@@ -6,18 +6,22 @@ import { CategoryService } from '@/services/category.service'
 
 import { toastrError } from '@/utils/toastrError'
 
-export const useCategoryData = () =>
-	useQuery({
+export const useCategoryData = () => {
+	let optionData: IOption[] = []
+	const categoriesData = useQuery({
 		queryKey: ['get all categories'],
 		queryFn: () => CategoryService.getAllCategories(),
-		select: ({ data }) =>
-			data.map(
+		onError: (error) => {
+			toastrError(error, 'Ошибка при загрузке категорий')
+		},
+		onSuccess: ({ data }) => {
+			optionData = data.map(
 				(category): IOption => ({
 					label: category.title,
 					value: category.id,
 				}),
-			),
-		onError: (error) => {
-			toastrError(error, 'Ошибка при загрузке категорий')
+			)
 		},
 	})
+	return { optionData, categoriesData }
+}

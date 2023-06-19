@@ -56,6 +56,8 @@ export const useBannerList = () => {
 		{
 			title: 'ID',
 			dataIndex: 'id',
+			fixed: 'left',
+			width: 50,
 			key: '1',
 		},
 		{
@@ -75,7 +77,7 @@ export const useBannerList = () => {
 		},
 		{
 			title: 'Изображение',
-			width: 50,
+			width: 150,
 			dataIndex: 'image',
 			key: 'image',
 			render: (image) => (
@@ -138,7 +140,7 @@ export const useBannerList = () => {
 			data.map(
 				(banner, idx): DataType => ({
 					id: banner.id,
-					editUrl: getAdminUrl(`categories/${banner.id}`),
+					editUrl: getAdminUrl(`banners/${banner.id}`),
 					title: banner.title,
 					description: banner.description.slice(0, 20) + '...',
 					key: idx,

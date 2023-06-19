@@ -5,38 +5,54 @@ import { RcFile } from 'antd/es/upload'
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { FC, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
-import { IUpdateProduct } from 'types/product.types'
+import { IUpdateBanner } from 'types/banner.types'
 
 import { getBase64 } from '@/utils/image'
 
 interface IProps {
-	images: string[]
-	setValue: UseFormSetValue<IUpdateProduct>
-	fileList: UploadFile[]
-	setFileList: (files: UploadFile[]) => void
+	image?: string
+	setValue: UseFormSetValue<IUpdateBanner>
 }
 
-const ProductImageUpload: FC<IProps> = ({ setValue, images, fileList, setFileList }) => {
+const CategoryImageUpload: FC<IProps> = ({ setValue, image }) => {
 	const [previewOpen, setPreviewOpen] = useState(false)
-	const [previewImage, setPreviewImage] = useState(images[0])
+	const [previewImage, setPreviewImage] = useState(image)
+	const [previewTitle, setPreviewTitle] = useState('Изображение')
+
+	const [fileList, setFileList] = useState<UploadFile[]>(
+		image
+			? [
+					{
+						name: '',
+						uid: '-1',
+						thumbUrl: image,
+					},
+			  ]
+			: [],
+	)
 
 	const handleCancel = () => setPreviewOpen(false)
 
 	const onChange: UploadProps['onChange'] = async ({ fileList: newFileList }) => {
 		setFileList(newFileList)
+		if (newFileList[0]?.originFileObj) {
+			let base64 = await getBase64(newFileList[0]?.originFileObj as RcFile)
+			setValue('image', base64)
+		}
 	}
 
 	const handlePreview = async (file: UploadFile) => {
-		if (!file.url && !file.preview) file.preview = await getBase64(file.originFileObj as RcFile)
-		setPreviewImage(file.preview as string)
+		if (image) {
+			setPreviewImage(image)
+		} else if (!file.url && !file.preview) {
+			file.preview = await getBase64(file.originFileObj as RcFile)
+		}
+		setPreviewImage(image || file.url || (file.preview as string))
 		setPreviewOpen(true)
 	}
 
-	const onRemove = (file: UploadFile) => {
-		setValue(
-			'images',
-			fileList.filter((a, _idx) => a.thumbUrl === file.thumbUrl).map((item, idx) => item.thumbUrl),
-		)
+	const onRemove = () => {
+		setValue('image', '')
 	}
 
 	const uploadButton = (
@@ -57,16 +73,15 @@ const ProductImageUpload: FC<IProps> = ({ setValue, images, fileList, setFileLis
 					onPreview={handlePreview}
 					onChange={onChange}
 					onRemove={onRemove}
-					defaultFileList={fileList}
 				>
-					{fileList.length < 5 && uploadButton}
+					{fileList.length < 1 && uploadButton}
 				</Upload>
 			</ImgCrop>
-			<Modal open={previewOpen} title={'Изображение'} footer={null} onCancel={handleCancel}>
+			<Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
 				<img src={previewImage} className='w-full' />
 			</Modal>
 		</>
 	)
 }
 
-export default ProductImageUpload
+export default CategoryImageUpload
